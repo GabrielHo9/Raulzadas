@@ -7,14 +7,14 @@ serverSocket = socket(AF_INET, SOCK_STREAM)
 
 # Prepara o socket do servidor
 serverPort = 6789  # Escolha a porta que deseja usar
-serverSocket.bind(('', serverPort))  # Bind do socket ao endereço e porta
+serverSocket.bind(('0.0.0.0', serverPort))  # Bind do socket ao endereço e porta
 serverSocket.listen(1)  # Escuta apenas uma conexão por vez
 
 print(f"Servidor web rodando na porta {serverPort}...")
-
+print('Prontinho')
 while True:
     # Estabelece a conexão
-    print('Ready to serve...')
+    
     connectionSocket, addr = serverSocket.accept()  # Aceita conexão do cliente
     try:
         # Recebe a mensagem do cliente (requisição HTTP)
@@ -28,7 +28,7 @@ while True:
 
         # Envia a linha de status do cabeçalho HTTP
         connectionSocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
-
+        print(f"200 OK")
         # Envia o conteúdo do arquivo ao cliente
         for i in range(0, len(outputdata)):
             connectionSocket.send(outputdata[i].encode())
@@ -41,6 +41,7 @@ while True:
         # Envia mensagem de erro 404 se o arquivo não for encontrado
         connectionSocket.send("HTTP/1.1 404 Not Found\r\n\r\n".encode())
         connectionSocket.send("<html><body><h1>404 Not Found</h1></body></html>\r\n".encode())
+        print(f"404 Not Found({filename})\n")
         # Fecha o socket do cliente
         connectionSocket.close()
 
